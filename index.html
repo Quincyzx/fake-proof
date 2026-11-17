@@ -127,7 +127,7 @@ function fetchDiscordUser() {
 </script>
 <!-- EDITOR PANEL -->
 <style>
-#ep-panel{position:fixed;top:50%;right:20px;transform:translateY(-50%);z-index:999998;width:380px;background:#2b2d31;border:1px solid #3f4147;border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,.5);font-family:'gg sans','Noto Sans',Helvetica,Arial,sans-serif;color:#dbdee1;overflow:hidden;opacity:0;pointer-events:none;transition:opacity .2s}
+#ep-panel{position:fixed;top:50%;right:20px;transform:translateY(-50%);z-index:999998;width:420px;background:#2b2d31;border:1px solid #3f4147;border-radius:12px;box-shadow:0 8px 32px rgba(0,0,0,.5);font-family:'gg sans','Noto Sans',Helvetica,Arial,sans-serif;color:#dbdee1;overflow:hidden;opacity:0;pointer-events:none;transition:opacity .2s}
 #ep-panel.open{opacity:1;pointer-events:auto}
 #ep-toggle{position:fixed;bottom:20px;right:20px;z-index:999999;width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#5865F2,#7289da);cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 15px rgba(88,101,242,.4);transition:transform .2s,box-shadow .2s}
 #ep-toggle:hover{transform:scale(1.1);box-shadow:0 6px 20px rgba(88,101,242,.6)}
@@ -136,58 +136,138 @@ function fetchDiscordUser() {
 .ep-input:focus{border-color:#5865F2}
 .ep-select{width:100%;box-sizing:border-box;background:#1e1f22;border:2px solid #5865F2;border-radius:4px;padding:8px 12px;color:#dbdee1;font-size:13px;outline:none;cursor:pointer;font-weight:600}
 .ep-hr{height:1px;background:#3f4147;margin:4px 0}
-.ep-btn{background:#5865F2;color:#fff;border:none;border-radius:4px;padding:8px 14px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap}
+.ep-btn{background:#5865F2;color:#fff;border:none;border-radius:4px;padding:8px 14px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;transition:background .15s}
 .ep-btn:hover{background:#4752c4}
+.ep-btn:disabled{opacity:0.6;cursor:not-allowed}
+.ep-btn-green{background:#248046}
+.ep-btn-green:hover{background:#1a6334}
+.ep-btn-subtle{background:#35373c;color:#dbdee1}
+.ep-btn-subtle:hover{background:#404249}
+.ep-help{font-size:11px;color:#949ba4;margin-top:3px;line-height:1.3}
+.ep-paste-box{border:2px dashed #3f4147;border-radius:6px;padding:12px;text-align:center;background:#202225;cursor:pointer;transition:border-color .2s,background .2s}
+.ep-paste-box:hover{border-color:#5865F2;background:#23252a}
 </style>
 
-<div id="ep-toggle" onclick="epToggle()">
+<div id="ep-toggle" onclick="epToggle()" title="Toggle Message Editor">
   <svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M19.14 12.94c.04-.31.06-.63.06-.94 0-.31-.02-.63-.06-.94l2.03-1.58a.49.49 0 00.12-.61l-1.92-3.32a.49.49 0 00-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.48.48 0 00-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96a.49.49 0 00-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.04.31-.06.63-.06.94s.02.63.06.94l-2.03 1.58a.49.49 0 00-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6A3.6 3.6 0 1112 8.4a3.6 3.6 0 010 7.2z"/></svg>
 </div>
 
 <div id="ep-panel">
-  <div style="padding:16px 16px 12px;background:#1e1f22;display:flex;align-items:center;border-bottom:1px solid #3f4147">
+  <div style="padding:14px 16px;background:#1e1f22;display:flex;align-items:center;border-bottom:1px solid #3f4147">
     <div style="flex:1">
-      <div style="font-size:16px;font-weight:600;color:#f2f3f5">Message Editor</div>
-      <div style="font-size:12px;color:#949ba4;margin-top:2px">Edit Strawhat0's message</div>
+      <div style="font-size:14px;font-weight:700;color:#f2f3f5">Message Editor</div>
+      <div style="font-size:11px;color:#949ba4;margin-top:2px">Simulated proof and message settings</div>
     </div>
-    <div onclick="epToggle()" style="cursor:pointer;width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:4px;color:#b5bac1">
+    <div onclick="epToggle()" style="cursor:pointer;width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:4px;color:#b5bac1" title="Close">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.4 4L12 10.4L5.6 4L4 5.6L10.4 12L4 18.4L5.6 20L12 13.6L18.4 20L20 18.4L13.6 12L20 5.6L18.4 4Z"/></svg>
     </div>
   </div>
 
-  <div style="padding:16px;display:flex;flex-direction:column;gap:14px;max-height:75vh;overflow-y:auto">
+  <div style="padding:14px 16px;display:flex;flex-direction:column;gap:12px;max-height:80vh;overflow-y:auto">
 
-    <div>
-      <label class="ep-label">Discord User ID</label>
-      <div style="display:flex;gap:8px">
-        <input id="ep-userid" class="ep-input" type="text" placeholder="Enter Discord User ID" style="flex:1;width:auto">
-        <button class="ep-btn" onclick="epFetchUser()">Fetch</button>
+    <!-- QUICK AUTO-FILL CARD -->
+    <div style="background:#202225;border:1px solid #3f4147;border-radius:6px;padding:12px">
+      <div style="margin-bottom:8px"><span style="font-size:11px;font-weight:700;color:#b5bac1;text-transform:uppercase;letter-spacing:.02em">Auto-Fill</span></div>
+
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <!-- Roblox Fetch -->
+        <div>
+          <label class="ep-label" style="font-size:10px;margin-bottom:4px">Roblox Username or User ID</label>
+          <div style="display:flex;gap:6px">
+            <input id="ep-roblox-user" class="ep-input" type="text" placeholder="e.g. TactSolos2 or Strawhat0" value="TactSolos2" style="flex:1;font-size:12px;padding:6px 10px" onkeydown="if(event.key==='Enter')epFetchRoblox()">
+            <button class="ep-btn" id="ep-btn-roblox" onclick="epFetchRoblox()" style="font-size:11px;padding:6px 10px">Fetch Profile</button>
+          </div>
+          <div id="ep-roblox-status" class="ep-help" style="min-height:14px"></div>
+        </div>
+
+        <!-- Optional Roblox Avatar Preview Box -->
+        <div id="ep-roblox-avatar-preview" style="display:none;align-items:center;gap:10px;background:#2b2d31;padding:8px 10px;border-radius:6px;border:1px solid #3f4147">
+          <img id="ep-roblox-avatar-img" src="" style="width:36px;height:36px;border-radius:50%;background:#1e1f22;object-fit:cover">
+          <div style="flex:1">
+            <div id="ep-roblox-avatar-label" style="font-size:11px;font-weight:600;color:#f2f3f5">Roblox Avatar</div>
+            <button class="ep-btn ep-btn-subtle" onclick="epApplyRobloxAvatarAsPFP()" style="font-size:10px;padding:3px 8px;margin-top:3px">Use as Discord PFP</button>
+          </div>
+        </div>
+
+        <!-- Discord Fetch -->
+        <div>
+          <label class="ep-label" style="font-size:10px;margin-bottom:4px">Discord User ID</label>
+          <div style="display:flex;gap:6px">
+            <input id="ep-userid" class="ep-input" type="text" placeholder="e.g. 159985870458322944" style="flex:1;font-size:12px;padding:6px 10px" onkeydown="if(event.key==='Enter')epFetchDiscord()">
+            <button class="ep-btn" id="ep-btn-discord" onclick="epFetchDiscord()" style="font-size:11px;padding:6px 10px">Fetch User</button>
+          </div>
+          <div id="ep-userid-status" class="ep-help" style="min-height:14px"></div>
+        </div>
+
+        <!-- Limiteds Screenshot Box with Ctrl+V Paste -->
+        <div>
+          <label class="ep-label" style="font-size:10px;margin-bottom:4px">Limiteds Screenshot</label>
+          
+          <div id="ep-paste-box" class="ep-paste-box" onclick="document.getElementById('ep-screenshot-file').click()" title="Click to upload or press Ctrl+V anywhere to paste screenshot">
+            <div style="font-size:11px;font-weight:600;color:#dbdee1;">Click to upload or press Ctrl+V to paste screenshot</div>
+            <div style="font-size:10px;color:#949ba4;margin-top:2px;">Snipping Tool / clipboard screenshots auto-apply immediately</div>
+          </div>
+          <input id="ep-screenshot-file" type="file" accept="image/*" style="display:none" onchange="epLoadScreenshot(event)">
+
+          <div style="display:flex;gap:6px;margin-top:6px">
+            <input id="ep-screenshot" class="ep-input" type="text" placeholder="Or paste image URL (e.g. Discord CDN link)..." oninput="epUpdateScreenshotFromInput()" style="flex:1;font-size:11px;padding:6px 10px">
+          </div>
+          <div id="ep-screenshot-status" class="ep-help" style="min-height:14px"></div>
+
+          <div id="ep-screenshot-preview" style="display:none;margin-top:6px;border-radius:6px;overflow:hidden;border:1px solid #3f4147">
+            <img id="ep-screenshot-img" src="" style="width:100%;display:block;max-height:160px;object-fit:cover">
+          </div>
+        </div>
+
+        <button class="ep-btn ep-btn-green" id="ep-btn-fetchall" onclick="epFetchAll()" style="width:100%;padding:8px;font-size:12px;margin-top:2px">
+          Fetch All Info
+        </button>
       </div>
-      <div id="ep-userid-status" style="font-size:11px;color:#949ba4;margin-top:4px"></div>
     </div>
 
+    <!-- DISCORD PROFILE SETTINGS -->
     <div>
-      <label class="ep-label">Display Name</label>
+      <label class="ep-label">Discord Display Name</label>
       <input id="ep-displayname" class="ep-input" type="text" placeholder="Strawhat0" value="Strawhat0" oninput="epUpdateName()">
     </div>
 
     <div>
-      <label class="ep-label">Avatar URL</label>
-      <input id="ep-avatar" class="ep-input" type="text" placeholder="Paste avatar image URL..." oninput="epUpdateAvatar()">
-      <div style="font-size:11px;color:#949ba4;margin-top:4px">Right-click pfp on Discord &rarr; Copy Image Address</div>
+      <label class="ep-label">Discord Avatar Image URL</label>
+      <div style="display:flex;gap:6px">
+        <input id="ep-avatar" class="ep-input" type="text" placeholder="Paste avatar image URL..." oninput="epUpdateAvatar()" style="flex:1">
+        <button class="ep-btn ep-btn-subtle" onclick="document.getElementById('ep-avatar-file').click()" style="font-size:11px;padding:6px 10px">Upload</button>
+        <input id="ep-avatar-file" type="file" accept="image/*" style="display:none" onchange="epLoadAvatarFile(event)">
+      </div>
     </div>
 
     <div class="ep-hr"></div>
 
+    <!-- SELLING OPTIONS -->
     <div>
-      <label class="ep-label" style="color:#5865F2">&#x1F4B0; Selling Option</label>
+      <label class="ep-label">Selling Mode</label>
       <select id="ep-mode" class="ep-select" onchange="epSwitchMode()">
+        <option value="account" selected>Option 2 &mdash; Selling My Roblox Account</option>
         <option value="shares">Option 1 &mdash; Selling % Shares in [Game]</option>
-        <option value="account">Option 2 &mdash; Selling My Roblox Account</option>
       </select>
     </div>
 
-    <div id="ep-fields-shares" style="display:flex;flex-direction:column;gap:12px">
+    <!-- OPTION 2: ACCOUNT FIELDS -->
+    <div id="ep-fields-account" style="display:flex;flex-direction:column;gap:10px">
+      <div>
+        <label class="ep-label">Account Username</label>
+        <div style="display:flex;gap:6px">
+          <input id="ep-accountname" class="ep-input" type="text" value="Strawhat0" placeholder="Roblox username" oninput="epSyncAccountUser(); epUpdateMsg()" style="flex:1">
+          <button class="ep-btn ep-btn-subtle" onclick="epFetchRoblox()" style="font-size:11px;padding:6px 10px">Fetch</button>
+        </div>
+      </div>
+      <div>
+        <label class="ep-label">Account Profile Link</label>
+        <input id="ep-accountlink" class="ep-input" type="text" placeholder="https://www.roblox.com/users/.../profile" oninput="epUpdateMsg()">
+      </div>
+    </div>
+
+    <!-- OPTION 1: SHARES FIELDS -->
+    <div id="ep-fields-shares" style="display:none;flex-direction:column;gap:10px">
       <div>
         <label class="ep-label">Game Name</label>
         <input id="ep-gamename" class="ep-input" type="text" value="Axe RNG" placeholder="Game name" oninput="epUpdateMsg()">
@@ -198,28 +278,6 @@ function fetchDiscordUser() {
       </div>
     </div>
 
-    <div id="ep-fields-account" style="display:none;flex-direction:column;gap:12px">
-      <div>
-        <label class="ep-label">Account Username</label>
-        <input id="ep-accountname" class="ep-input" type="text" value="Strawhat0" placeholder="Username" oninput="epUpdateMsg()">
-      </div>
-      <div>
-        <label class="ep-label">Account Link</label>
-        <input id="ep-accountlink" class="ep-input" type="text" placeholder="https://www.roblox.com/users/..." oninput="epUpdateMsg()">
-      </div>
-      <div>
-        <label class="ep-label">Limiteds Screenshot</label>
-        <div style="display:flex;gap:8px;margin-bottom:8px">
-          <button class="ep-btn" onclick="document.getElementById('ep-screenshot-file').click()" style="flex:1;font-size:12px">&#x1F4C2; Upload Image</button>
-          <input id="ep-screenshot-file" type="file" accept="image/*" style="display:none" onchange="epLoadScreenshot(event)">
-        </div>
-        <input id="ep-screenshot" class="ep-input" type="text" placeholder="Or paste image URL..." oninput="epUpdateMsg()" style="margin-bottom:8px">
-        <div id="ep-screenshot-preview" style="display:none;margin-top:4px;border-radius:6px;overflow:hidden;border:1px solid #3f4147">
-          <img id="ep-screenshot-img" src="" style="width:100%;display:block;max-height:160px;object-fit:cover">
-        </div>
-      </div>
-    </div>
-
   </div>
 </div>
 
@@ -227,14 +285,14 @@ function fetchDiscordUser() {
 (function(){
   var _defSrc = '';
   var _open = false;
+  window._lastRobloxAvatar = '';
+  window._lastRobloxUserId = '';
 
-  // Cache original attachment src once DOM is ready
   function _initSrc(){
     var img = document.getElementById('strawhat-attachment-img');
     if(img && !_defSrc) _defSrc = img.src;
   }
   document.addEventListener('DOMContentLoaded', _initSrc);
-  // Also try immediately in case DOM already loaded
   _initSrc();
 
   window.epToggle = function(){
@@ -262,6 +320,24 @@ function fetchDiscordUser() {
     if(el && url) el.src = url;
   };
 
+  window.epLoadAvatarFile = function(evt){
+    var file = evt.target.files[0];
+    if(!file) return;
+    var reader = new FileReader();
+    reader.onload = function(e){
+      var dataUrl = e.target.result;
+      document.getElementById('ep-avatar').value = dataUrl;
+      epUpdateAvatar();
+    };
+    reader.readAsDataURL(file);
+  };
+
+  window.epSyncAccountUser = function(){
+    var v = document.getElementById('ep-accountname').value;
+    var ro = document.getElementById('ep-roblox-user');
+    if(ro && v) ro.value = v;
+  };
+
   window.epSwitchMode = function(){
     var m = document.getElementById('ep-mode').value;
     document.getElementById('ep-fields-shares').style.display = m==='shares' ? 'flex' : 'none';
@@ -270,6 +346,74 @@ function fetchDiscordUser() {
   };
 
   function _esc(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+  // Apply screenshot to attachment and preview
+  function _applyScreenshot(src, note){
+    var shotInput = document.getElementById('ep-screenshot');
+    if(shotInput) shotInput.value = src;
+    var attachImg = document.getElementById('strawhat-attachment-img');
+    if(attachImg) attachImg.src = src;
+    var prev = document.getElementById('ep-screenshot-preview');
+    var previewImg = document.getElementById('ep-screenshot-img');
+    if(prev && previewImg){
+      previewImg.src = src;
+      prev.style.display = 'block';
+    }
+    var st = document.getElementById('ep-screenshot-status');
+    if(st && note){
+      st.textContent = '✓ ' + note;
+      st.style.color = '#23a559';
+    }
+  }
+
+  window.epUpdateScreenshotFromInput = function(){
+    var v = (document.getElementById('ep-screenshot').value || '').trim();
+    if(v){
+      _applyScreenshot(v, 'Image URL applied');
+    } else {
+      if(_defSrc) _applyScreenshot(_defSrc, '');
+      var prev = document.getElementById('ep-screenshot-preview');
+      if(prev) prev.style.display = 'none';
+    }
+  };
+
+  window.epLoadScreenshot = function(evt){
+    var file = evt.target.files[0];
+    if(!file) return;
+    var reader = new FileReader();
+    reader.onload = function(e){
+      _applyScreenshot(e.target.result, 'Uploaded image applied (' + file.name + ')');
+    };
+    reader.readAsDataURL(file);
+  };
+
+  // CLIPBOARD IMAGE PASTE (CTRL+V ANYWHERE)
+  window.addEventListener('paste', function(e){
+    if(e.clipboardData && e.clipboardData.items){
+      var items = e.clipboardData.items;
+      for(var i = 0; i < items.length; i++){
+        if(items[i].type.indexOf('image') !== -1){
+          var file = items[i].getAsFile();
+          if(file){
+            e.preventDefault();
+            var reader = new FileReader();
+            reader.onload = function(evt){
+              _applyScreenshot(evt.target.result, 'Image pasted from clipboard!');
+            };
+            reader.readAsDataURL(file);
+            return;
+          }
+        }
+      }
+    }
+
+    var active = document.activeElement;
+    if(active && active.id === 'ep-screenshot'){
+      setTimeout(function(){
+        epUpdateScreenshotFromInput();
+      }, 50);
+    }
+  });
 
   window.epUpdateMsg = function(){
     var m = document.getElementById('ep-mode').value;
@@ -290,7 +434,7 @@ function fetchDiscordUser() {
       var linkHtml = alink ? '<a class="anchor_edefb8 anchorUnderlineOnHover_edefb8" href="'+_esc(alink)+'" rel="noreferrer noopener" target="_blank">'+_esc(alink)+'</a>' : '<span>______</span>';
       contentEl.innerHTML = '<strong><span>Selling my roblox account <span id="strawhat-accountname">'+_esc(aname)+'</span></span></strong><br><span>account link is </span>'+linkHtml+'<br><span>and here is a screenshot of my limiteds,</span>';
       if(imgEl) imgEl.src = (shot && shot.trim()) ? shot : (_defSrc || '');
-      // Update preview panel
+      
       var prev = document.getElementById('ep-screenshot-preview');
       var previewImg = document.getElementById('ep-screenshot-img');
       if(prev && previewImg){
@@ -304,39 +448,209 @@ function fetchDiscordUser() {
     }
   };
 
-  window.epLoadScreenshot = function(evt){
-    var file = evt.target.files[0];
-    if(!file) return;
-    var reader = new FileReader();
-    reader.onload = function(e){
-      var dataUrl = e.target.result;
-      // Store in the URL input as data URL so epUpdateMsg picks it up
-      document.getElementById('ep-screenshot').value = dataUrl;
-      // Show preview
-      var prev = document.getElementById('ep-screenshot-preview');
-      var img  = document.getElementById('ep-screenshot-img');
-      img.src = dataUrl;
-      prev.style.display = 'block';
-      // Update the Discord message image
-      var imgEl = document.getElementById('strawhat-attachment-img');
-      if(imgEl) imgEl.src = dataUrl;
-    };
-    reader.readAsDataURL(file);
+  // ROBLOX AUTOMATIC PROFILE FETCH
+  window.epFetchRoblox = async function(){
+    var uname = (document.getElementById('ep-roblox-user').value || document.getElementById('ep-accountname').value || '').trim();
+    var st    = document.getElementById('ep-roblox-status');
+    var btn   = document.getElementById('ep-btn-roblox');
+    if(!uname){
+      st.textContent = 'Please enter a Roblox username or ID';
+      st.style.color = '#f23f43';
+      return;
+    }
+    st.textContent = 'Fetching Roblox user profile...';
+    st.style.color = '#5865F2';
+    if(btn) btn.disabled = true;
+
+    var userId = null;
+    var exactName = uname;
+    var displayName = uname;
+
+    if(/^\d+$/.test(uname)){
+      userId = uname;
+      try {
+        var idRes = await fetch('https://users.roproxy.com/v1/users/' + userId);
+        if(idRes.ok){
+          var idData = await idRes.json();
+          if(idData && idData.name){
+            exactName = idData.name;
+            displayName = idData.displayName || idData.name;
+          }
+        }
+      } catch(e){}
+    } else {
+      try {
+        var r = await fetch('https://users.roproxy.com/v1/usernames/users', {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=UTF-8' },
+          body: JSON.stringify({ usernames: [uname], excludeBannedUsers: false })
+        });
+        if(r.ok){
+          var data = await r.json();
+          if(data && data.data && data.data.length > 0){
+            var u = data.data[0];
+            userId = u.id;
+            exactName = u.name;
+            displayName = u.displayName || u.name;
+          }
+        }
+      } catch(e) {
+        console.warn('Roblox lookup error:', e);
+      }
+    }
+
+    if(btn) btn.disabled = false;
+
+    if(userId){
+      window._lastRobloxUserId = userId;
+      var profileLink = 'https://www.roblox.com/users/' + userId + '/profile';
+      document.getElementById('ep-accountname').value = exactName;
+      document.getElementById('ep-roblox-user').value = exactName;
+      document.getElementById('ep-accountlink').value = profileLink;
+
+      // Update Discord display name if Strawhat0
+      var dName = document.getElementById('ep-displayname');
+      if(dName && (dName.value === 'Strawhat0' || !dName.value)){
+        dName.value = exactName;
+        epUpdateName();
+      }
+
+      // Switch mode to account
+      var modeSelect = document.getElementById('ep-mode');
+      if(modeSelect.value !== 'account'){
+        modeSelect.value = 'account';
+        epSwitchMode();
+      } else {
+        epUpdateMsg();
+      }
+
+      // Fetch avatar headshot
+      var avatarHeadshot = '';
+      try {
+        var tr = await fetch('https://thumbnails.roproxy.com/v1/users/avatar-headshot?userIds=' + userId + '&size=420x420&format=Png&isCircular=false');
+        if(tr.ok){
+          var td = await tr.json();
+          if(td && td.data && td.data[0] && td.data[0].imageUrl){
+            avatarHeadshot = td.data[0].imageUrl;
+          }
+        }
+      } catch(te){}
+
+      window._lastRobloxAvatar = avatarHeadshot;
+
+      var previewBox = document.getElementById('ep-roblox-avatar-preview');
+      if(avatarHeadshot && previewBox){
+        document.getElementById('ep-roblox-avatar-img').src = avatarHeadshot;
+        document.getElementById('ep-roblox-avatar-label').textContent = exactName + ' (ID: ' + userId + ')';
+        previewBox.style.display = 'flex';
+      }
+
+      st.textContent = '✓ Found: ' + exactName + ' (ID: ' + userId + ') — profile link set!';
+      st.style.color = '#23a559';
+    } else {
+      st.textContent = '❌ Could not find Roblox user: ' + uname;
+      st.style.color = '#f23f43';
+    }
   };
 
-  window.epFetchUser = function(){
-    var uid = document.getElementById('ep-userid').value.trim();
+  // DISCORD AUTOMATIC USER FETCH
+  window.epFetchDiscord = async function(){
+    var uid = (document.getElementById('ep-userid').value || '').trim();
     var st  = document.getElementById('ep-userid-status');
-    if(!uid){ st.textContent='Enter a user ID first'; st.style.color='#f23f43'; return; }
-    st.textContent='Setting default avatar...'; st.style.color='#949ba4';
-    try{
-      var idx = Number(BigInt(uid) >> 22n) % 6;
-      var url = 'https://cdn.discordapp.com/embed/avatars/'+idx+'.png';
-      document.getElementById('ep-avatar').value = url;
+    var btn = document.getElementById('ep-btn-discord');
+    if(!uid){
+      st.textContent = 'Enter a Discord User ID first';
+      st.style.color = '#f23f43';
+      return;
+    }
+
+    if(!/^\d+$/.test(uid)){
+      st.textContent = '❌ Please enter a numeric Discord User ID (e.g. 159985870458322944)';
+      st.style.color = '#f23f43';
+      return;
+    }
+
+    st.textContent = 'Fetching Discord user...';
+    st.style.color = '#5865F2';
+    if(btn) btn.disabled = true;
+
+    var found = false;
+    var displayName = '';
+    var avatarUrl = '';
+
+    try {
+      var r = await fetch('https://japi.rest/discord/v1/user/' + encodeURIComponent(uid));
+      var res = await r.json();
+      if(res && res.data && res.data.username){
+        var u = res.data;
+        found = true;
+        displayName = u.global_name || u.username;
+        if(u.avatar){
+          var ext = u.avatar.startsWith('a_') ? 'gif' : 'png';
+          avatarUrl = 'https://cdn.discordapp.com/avatars/' + u.id + '/' + u.avatar + '.' + ext + '?size=256';
+        } else {
+          var idx = Math.abs(Number(BigInt(u.id) >> 22n) % 6);
+          avatarUrl = 'https://cdn.discordapp.com/embed/avatars/' + idx + '.png';
+        }
+      } else {
+        var errMsg = (res && res.data && res.data.message) ? res.data.message : 'Unknown User';
+        st.textContent = 'Discord User ' + uid + ' not found (' + errMsg + '). Make sure to copy a User ID, not a channel ID.';
+        st.style.color = '#f23f43';
+      }
+    } catch(e) {
+      console.warn('Discord lookup error:', e);
+      var idx2 = 0;
+      try { idx2 = Math.abs(Number(BigInt(uid) >> 22n) % 6); } catch(ex){}
+      avatarUrl = 'https://cdn.discordapp.com/embed/avatars/' + idx2 + '.png';
+      st.textContent = 'Could not reach Discord lookup server. Applied default avatar for ID ' + uid;
+      st.style.color = '#faa81a';
+    }
+
+    if(btn) btn.disabled = false;
+
+    if(displayName){
+      document.getElementById('ep-displayname').value = displayName;
+      epUpdateName();
+    }
+    if(avatarUrl){
+      document.getElementById('ep-avatar').value = avatarUrl;
       epUpdateAvatar();
-      st.innerHTML='Default avatar applied. For real avatar: right-click pfp &rarr; Copy Image Address.';
-      st.style.color='#23a559';
-    }catch(e){ st.textContent='Invalid user ID'; st.style.color='#f23f43'; }
+    }
+
+    if(found){
+      st.textContent = 'Loaded Discord User: @' + displayName;
+      st.style.color = '#23a559';
+    }
   };
+
+  // APPLY ROBLOX AVATAR AS DISCORD PFP
+  window.epApplyRobloxAvatarAsPFP = function(){
+    if(window._lastRobloxAvatar){
+      document.getElementById('ep-avatar').value = window._lastRobloxAvatar;
+      epUpdateAvatar();
+      var st = document.getElementById('ep-roblox-status');
+      if(st){
+        st.textContent = 'Applied Roblox avatar as Discord avatar';
+        st.style.color = '#23a559';
+      }
+    }
+  };
+
+  // FETCH ALL IN ONE CLICK
+  window.epFetchAll = async function(){
+    var btn = document.getElementById('ep-btn-fetchall');
+    if(btn){
+      btn.textContent = 'Fetching Information...';
+      btn.disabled = true;
+    }
+    await Promise.allSettled([epFetchRoblox(), epFetchDiscord()]);
+    if(btn){
+      btn.textContent = 'Fetch All Info';
+      btn.disabled = false;
+    }
+  };
+
+  // Default mode initialization
+  window.epSwitchMode();
 })();
 </script>
